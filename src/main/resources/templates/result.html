@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Result</title>
+</head>
+<body>
+  <h1>結果</h1>
+
+  <p th:text="|正解数：${correct} / ${total}|">正解数</p>
+
+  <form method="post" th:action="@{/reset}">
+    <button type="submit">タイトルに戻る</button>
+  </form>
+</body>
+</html>

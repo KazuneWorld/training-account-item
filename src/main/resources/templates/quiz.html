@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz</title>
+  <style>
+    .choices { display: grid; gap: 10px; max-width: 420px; }
+    .result-box { margin-top: 16px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; max-width: 520px; }
+    .correct { color: #0a7a0a; font-weight: bold; }
+    .wrong { color: #b00020; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div>
+    <div th:text="|問題 ${index} / ${total}|"></div>
+    <h2 th:text="${problem.questionText}">問題文</h2>
+
+    <!-- 回答前：選択肢ボタン -->
+    <div th:if="${!quizSession.answered}" class="choices">
+      <form method="post" th:action="@{/quiz/answer}">
+        <button type="submit" name="selectedIndex" value="0" th:text="${choices[0]}"></button>
+      </form>
+      <form method="post" th:action="@{/quiz/answer}">
+        <button type="submit" name="selectedIndex" value="1" th:text="${choices[1]}"></button>
+      </form>
+      <form method="post" th:action="@{/quiz/answer}">
+        <button type="submit" name="selectedIndex" value="2" th:text="${choices[2]}"></button>
+      </form>
+      <form method="post" th:action="@{/quiz/answer}">
+        <button type="submit" name="selectedIndex" value="3" th:text="${choices[3]}"></button>
+      </form>
+      <form method="post" th:action="@{/quiz/answer}">
+        <button type="submit" name="selectedIndex" value="4" th:text="${choices[4]}"></button>
+      </form>
+    </div>
+
+    <!-- 回答後：結果表示（同じ画面内） -->
+    <div th:if="${quizSession.answered}" class="result-box">
+      <div th:classappend="${quizSession.lastCorrect} ? 'correct' : 'wrong'"
+           th:text="${quizSession.lastCorrect} ? '正解！' : '不正解…'">
+        結果
+      </div>
+
+      <div th:text="|あなたの回答：${choices[quizSession.lastSelectedIndex]}|"></div>
+      <div th:text="|正解：${choices[quizSession.lastCorrectIndex]}|"></div>
+
+      <form method="post" th:action="@{/quiz/next}" style="margin-top: 12px;">
+        <button type="submit">次の問題へ</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
