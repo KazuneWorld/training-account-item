@@ -1,0 +1,477 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #667eea;
+  --primary-dark: #764ba2;
+  --success-color: #0a7a0a;
+  --error-color: #b00020;
+  --text-dark: #333;
+  --text-light: #666;
+  --border-color: #e0e0e0;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 25px rgba(102, 126, 234, 0.2);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: var(--text-dark);
+}
+
+/* ==========================================
+   コンテナ
+   ========================================== */
+
+.container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  padding: 50px 40px;
+  max-width: 600px;
+  width: 100%;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container h1 {
+  text-align: center;
+  font-size: 2.5em;
+  color: var(--text-dark);
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 1.1em;
+  margin-bottom: 40px;
+  animation: fadeIn 0.6s ease-out 0.1s both;
+}
+
+/* ==========================================
+   インデックスページ
+   ========================================== */
+
+.button-form {
+  animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+/* ==========================================
+   クイズページ
+   ========================================== */
+
+.quiz-container {
+  padding: 40px 30px;
+}
+
+.quiz-container h1 {
+  display: none;
+}
+
+/* 進捗セクション */
+.progress-section {
+  margin-bottom: 40px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.progress-text {
+  font-size: 0.95em;
+  color: var(--text-light);
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.4s ease-out;
+  border-radius: 10px;
+}
+
+/* 問題セクション */
+.question-section {
+  margin-bottom: 35px;
+  animation: fadeIn 0.6s ease-out 0.1s both;
+}
+
+.question-text {
+  font-size: 1.6em;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-dark);
+  margin: 0;
+  word-break: break-word;
+}
+
+/* 選択肢 */
+.choices {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.choice-form {
+  margin: 0;
+}
+
+.btn-choice {
+  padding: 16px 20px;
+  font-size: 1em;
+  font-weight: 500;
+  background: white;
+  color: var(--primary-color);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.btn-choice:hover {
+  border-color: var(--primary-color);
+  background: #f8f9ff;
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.btn-choice:active {
+  transform: translateX(3px);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+}
+
+/* 結果セクション */
+.result-section {
+  animation: slideIn 0.5s ease-out;
+}
+
+.result-badge {
+  text-align: center;
+  font-size: 1.8em;
+  font-weight: 700;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  letter-spacing: 2px;
+}
+
+.result-badge.correct {
+  background: #e8f5e9;
+  color: var(--success-color);
+}
+
+.result-badge.wrong {
+  background: #ffebee;
+  color: var(--error-color);
+}
+
+.result-details {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.result-item {
+  margin-bottom: 15px;
+}
+
+.result-item:last-child {
+  margin-bottom: 0;
+}
+
+.result-label {
+  display: block;
+  font-size: 0.9em;
+  color: var(--text-light);
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.result-value {
+  display: block;
+  font-size: 1.2em;
+  color: var(--text-dark);
+  font-weight: 600;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.result-value.correct-answer {
+  border-left-color: var(--success-color);
+  color: var(--success-color);
+}
+
+/* ==========================================
+   結果ページ
+   ========================================== */
+
+.result-container {
+  text-align: center;
+}
+
+.result-container h1 {
+  margin-bottom: 40px;
+}
+
+.score-section {
+  margin-bottom: 40px;
+  animation: slideIn 0.6s ease-out 0.2s both;
+}
+
+.score-circle {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+  color: white;
+  position: relative;
+}
+
+.score-number {
+  font-size: 4em;
+  font-weight: 700;
+}
+
+.score-total {
+  font-size: 1.3em;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.score-text {
+  font-size: 1.3em;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+/* 評価メッセージ */
+.evaluation {
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 35px;
+  animation: fadeIn 0.6s ease-out 0.3s both;
+}
+
+.evaluation.excellent {
+  background: #e8f5e9;
+  color: var(--success-color);
+  border: 2px solid var(--success-color);
+}
+
+.evaluation.good {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 2px solid #1976d2;
+}
+
+.evaluation.keep-trying {
+  background: #fff3e0;
+  color: #f57c00;
+  border: 2px solid #f57c00;
+}
+
+/* ==========================================
+   ボタン
+   ========================================== */
+
+.btn {
+  border: none;
+  padding: 16px 40px;
+  font-size: 1.1em;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* ==========================================
+   アニメーション
+   ========================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==========================================
+   レスポンシブ対応
+   ========================================== */
+
+@media (max-width: 600px) {
+  .container {
+    padding: 35px 25px;
+  }
+
+  .container h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 1em;
+    margin-bottom: 30px;
+  }
+
+  .quiz-container {
+    padding: 30px 20px;
+  }
+
+  .question-text {
+    font-size: 1.4em;
+  }
+
+  .btn-choice {
+    padding: 14px 16px;
+    font-size: 0.95em;
+  }
+
+  .score-circle {
+    width: 160px;
+    height: 160px;
+  }
+
+  .score-number {
+    font-size: 3.2em;
+  }
+
+  .score-text {
+    font-size: 1.1em;
+  }
+
+  .evaluation {
+    font-size: 1.05em;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding: 25px 15px;
+  }
+
+  .container h1 {
+    font-size: 1.6em;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 0.9em;
+    margin-bottom: 25px;
+  }
+
+  .progress-text {
+    font-size: 0.85em;
+  }
+
+  .question-text {
+    font-size: 1.2em;
+  }
+
+  .btn-choice {
+    padding: 12px 14px;
+    font-size: 0.9em;
+  }
+
+  .result-badge {
+    font-size: 1.5em;
+    padding: 15px;
+  }
+
+  .result-item {
+    margin-bottom: 12px;
+  }
+
+  .result-value {
+    font-size: 1.05em;
+  }
+
+  .btn {
+    padding: 14px 30px;
+    font-size: 1em;
+  }
+
+  .score-circle {
+    width: 140px;
+    height: 140px;
+  }
+
+  .score-number {
+    font-size: 2.8em;
+  }
+
+  .score-text {
+    font-size: 1em;
+  }
+}

@@ -18,6 +18,8 @@ import com.example.demo.model.Problem;
 import com.example.demo.service.ProblemService;
 import com.example.demo.session.QuizSession;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * 画面の遷移と、回答処理を担当するコントローラです。
  *
@@ -34,27 +36,18 @@ import com.example.demo.session.QuizSession;
  */
 @Controller
 @SessionAttributes("quizSession") // quizSession をセッションに保存する指定
+@RequiredArgsConstructor
 public class QuizController {
 
     private final ProblemService problemService;
 
-    public QuizController(ProblemService problemService) {
-        this.problemService = problemService;
-    }
-
-    /**
-     * セッションに quizSession が無いとき、新規作成するためのメソッドです。
-     * （最初にアクセスしたときなど）
-     */
+    // quizSession をセッションに保存するための初期化メソッド
     @ModelAttribute("quizSession")
     public QuizSession createQuizSession() {
         return new QuizSession();
     }
 
-    // =========================
     // タイトル画面
-    // =========================
-
     @GetMapping("/")
     public String showTitle() {
         return "title";
@@ -73,15 +66,17 @@ public class QuizController {
 
         // 全問題IDを取得
         List<Problem> allProblems = problemService.findAll();
+        //問題IDのリストを定義
         List<Integer> ids = new ArrayList<>();
+        // 問題IDをリストに追加していく
         for (Problem p : allProblems) {
             ids.add(p.getId());
         }
 
-        // ランダムに並べ替え（シャッフル）
+        // IDをランダムに並べ替え（シャッフル）
         Collections.shuffle(ids);
 
-        // 今回は5問出題（ただし問題が5件未満ならある分だけ）
+        // 出題数の設定:5問（足りなければあるだけ出題）
         int questionCount = 5;
         if (ids.size() < 5) {
             questionCount = ids.size();
@@ -89,9 +84,11 @@ public class QuizController {
 
         // 出題順リスト（先頭からquestionCount件を採用）
         List<Integer> order = new ArrayList<>();
+        // questionCount件分のIDを出題順リストに追加
         for (int i = 0; i < questionCount; i++) {
             order.add(ids.get(i));
         }
+        // セッションに出題順を保存（確定）
         session.setQuestionOrder(order);
 
         // 1問目へ
@@ -112,9 +109,9 @@ public class QuizController {
     public String showQuiz(@ModelAttribute("quizSession") QuizSession session, Model model) {
 
         // クイズが開始されていない（出題順がない）場合はタイトルへ
-        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
-            return "redirect:/";
-        }
+//        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
+//            return "redirect:/";
+//        }
 
         // すべての問題を解き終わっていたらリザルトへ
         if (session.isFinished()) {
@@ -146,15 +143,15 @@ public class QuizController {
     public String answer(@ModelAttribute("quizSession") QuizSession session,
                          @RequestParam("selectedIndex") int selectedIndex) {
 
-        // 未開始ならタイトルへ（通常は起きないが保険）
-        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
-            return "redirect:/";
-        }
-
-        // 二重回答防止：回答済みなら何もしない
-        if (session.isAnswered()) {
-            return "redirect:/quiz";
-        }
+//        // 未開始ならタイトルへ（通常は起きないが保険）
+//        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
+//            return "redirect:/";
+//        }
+//
+//        // 二重回答防止：回答済みなら何もしない
+//        if (session.isAnswered()) {
+//            return "redirect:/quiz";
+//        }
 
         // 今の問題を取得
         int problemId = session.getCurrentProblemId();
@@ -188,15 +185,15 @@ public class QuizController {
     @PostMapping("/quiz/next")
     public String next(@ModelAttribute("quizSession") QuizSession session) {
 
-        // 未開始ならタイトルへ
-        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
-            return "redirect:/";
-        }
-
-        // 回答していないのに次へは押せない想定（保険）
-        if (!session.isAnswered()) {
-            return "redirect:/quiz";
-        }
+//        // 未開始ならタイトルへ
+//        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
+//            return "redirect:/";
+//        }
+//
+//        // 回答していないのに次へは押せない想定（保険）
+//        if (!session.isAnswered()) {
+//            return "redirect:/quiz";
+//        }
 
         // 次の問題へ進める
         session.setCurrentIndex(session.getCurrentIndex() + 1);
@@ -208,36 +205,27 @@ public class QuizController {
         if (session.isFinished()) {
             return "redirect:/result";
         }
-
+        // 次の問題へ
         return "redirect:/quiz";
     }
 
-    // =========================
     // リザルト画面
-    // =========================
-
     @GetMapping("/result")
     public String showResult(@ModelAttribute("quizSession") QuizSession session, Model model) {
 
-        // 未開始ならタイトルへ
-        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
-            return "redirect:/";
-        }
-
+//        // 未開始ならタイトルへ
+//        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
+//            return "redirect:/";
+//        }
+    	
         model.addAttribute("correct", session.getCorrectCount());
         model.addAttribute("total", session.getTotalQuestionCount());
-
+        
         return "result";
     }
 
-    // =========================
-    // リセット（タイトルに戻る）
-    // =========================
-
-    /**
-     * タイトルに戻るボタン：
-     * セッション上の quizSession を破棄して、次回は新規スタートになるようにします。
-     */
+    //タイトルに戻るボタン：
+    // セッション上の quizSession を破棄して、次回は新規スタートになるようにします。
     @PostMapping("/reset")
     public String reset(SessionStatus status) {
         status.setComplete(); // @SessionAttributes の内容を破棄

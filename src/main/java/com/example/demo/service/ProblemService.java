@@ -18,13 +18,13 @@ public class ProblemService {
     public ProblemService() {
         List<Problem> list = new ArrayList<>();
 
-        // correctIndex は 0=A, 1=B, 2=C, 3=D, 4=E
-        list.add(new Problem(1, "【問題1】正解はA〜Eのどれ？", 0)); // A
-        list.add(new Problem(2, "【問題2】正解はA〜Eのどれ？", 1)); // B
-        list.add(new Problem(3, "【問題3】正解はA〜Eのどれ？", 2)); // C
-        list.add(new Problem(4, "【問題4】正解はA〜Eのどれ？", 3)); // D
-        list.add(new Problem(5, "【問題5】正解はA〜Eのどれ？", 4)); // E
-        list.add(new Problem(6, "【問題6】正解はA〜Eのどれ？", 0)); // A
+        // correctIndex は 0=資産, 1=負債, 2=純資産, 3=収益, 4=費用 を表す
+        list.add(new Problem(1, "現金", 0));
+//        list.add(new Problem(2, "買掛金", 1));
+//        list.add(new Problem(3, "売掛金", 0));
+//        list.add(new Problem(4, "受取利息", 3));
+//        list.add(new Problem(5, "給料", 4));
+//        list.add(new Problem(6, "繰越利益剰余金", 2));
 
         this.problems = list;
     }
@@ -35,19 +35,14 @@ public class ProblemService {
         return problems;
     }
 
-    /**
-     * IDで問題を1件取得します。
-     *
-     * 「分かりやすさ優先」で、まずはシンプルに for 文で探します。
-     * 問題数が増えて効率が気になったら、Map化（id→Problem）にすると高速になります。
-     */
+    // IDで問題を1件取得
     public Problem findById(int id) {
         for (Problem p : problems) {
             if (p.getId() == id) {
                 return p;
             }
         }
-        // 今回は例外で落として「データがおかしい」ことが分かるようにしています
+        
         throw new IllegalArgumentException("Problem not found. id=" + id);
     }
 }

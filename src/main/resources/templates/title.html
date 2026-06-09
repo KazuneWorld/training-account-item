@@ -2,13 +2,18 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz - Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>簿記3級勘定科目クイズ</title>
+  <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
-  <h1>クイズ</h1>
+  <div class="container">
+    <h1>簿記3級勘定科目クイズ</h1>
+    <p class="subtitle">勘定科目の分類をマスターしよう！</p>
 
-  <form method="post" th:action="@{/start}">
-    <button type="submit">スタート</button>
-  </form>
+    <form method="post" th:action="@{/start}" class="button-form">
+      <button type="submit" class="btn btn-primary">スタート</button>
+    </form>
+  </div>
 </body>
 </html>

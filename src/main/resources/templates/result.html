@@ -2,15 +2,33 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Result</title>
+  <title>簿記3級勘定科目クイズ</title>
+  <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
-  <h1>結果</h1>
+	<div class="container result-container">
+	  <h1>スコア</h1>
 
-  <p th:text="|正解数：${correct} / ${total}|">正解数</p>
+	  <!-- スコア表示 -->
+	  <div class="score-section">
+	    <div class="score-circle">
+	      <div class="score-number" th:text="${correct}"></div>
+	      <div class="score-total" th:text="'/ ' + ${total}"></div>
+	    </div>
+	    <div class="score-text" th:text="|正解率：${(correct * 100 / total).intValue()}%|"></div>
+	  </div>
 
-  <form method="post" th:action="@{/reset}">
-    <button type="submit">タイトルに戻る</button>
-  </form>
+	  <!-- 評価メッセージ -->
+	  <div class="evaluation" th:classappend="|*{(correct * 100 / total) >= 80} ? 'excellent' : *{(correct * 100 / total) >= 60} ? 'good' : 'keep-trying'|">
+	    <span th:if="|${(correct * 100 / total) >= 80}|">素晴らしい！完璧に近いです！</span>
+	    <span th:if="|${(correct * 100 / total) < 80 && (correct * 100 / total) >= 60}|">よくできました！もう少しで完璧です！</span>
+	    <span th:if="|${(correct * 100 / total) < 60}|">頑張ってください！もう一度挑戦しましょう！</span>
+	  </div>
+
+	  <!-- 戻るボタン -->
+	  <form method="post" th:action="@{/reset}" class="button-form">
+	    <button type="submit" class="btn btn-primary">タイトルに戻る</button>
+	  </form>
+	</div>
 </body>
 </html>
