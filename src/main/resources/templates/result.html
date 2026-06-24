@@ -2,33 +2,31 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>簿記3級勘定科目クイズ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>結果</title>
   <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
-	<div class="container result-container">
-	  <h1>スコア</h1>
+  <div class="container result-container">
+    <h1>クイズ完了！</h1>
 
-	  <!-- スコア表示 -->
-	  <div class="score-section">
-	    <div class="score-circle">
-	      <div class="score-number" th:text="${correct}"></div>
-	      <div class="score-total" th:text="'/ ' + ${total}"></div>
-	    </div>
-	    <div class="score-text" th:text="|正解率：${(correct * 100 / total).intValue()}%|"></div>
-	  </div>
+    <div class="score-section">
+      <div class="score-circle">
+        <div class="score-number" th:text="${correct}"></div>
+        <div class="score-total" th:text="'/ ' + ${total}"></div>
+      </div>
+      <div class="score-text" th:text="|正解率：${(correct * 100 / total).intValue()}%|"></div>
+    </div>
 
-	  <!-- 評価メッセージ -->
-	  <div class="evaluation" th:classappend="|*{(correct * 100 / total) >= 80} ? 'excellent' : *{(correct * 100 / total) >= 60} ? 'good' : 'keep-trying'|">
-	    <span th:if="|${(correct * 100 / total) >= 80}|">素晴らしい！完璧に近いです！</span>
-	    <span th:if="|${(correct * 100 / total) < 80 && (correct * 100 / total) >= 60}|">よくできました！もう少しで完璧です！</span>
-	    <span th:if="|${(correct * 100 / total) < 60}|">頑張ってください！もう一度挑戦しましょう！</span>
-	  </div>
+    <div class="evaluation" th:classappend="|*{(correct * 100 / total) >= 80} ? 'excellent' : *{(correct * 100 / total) >= 60} ? 'good' : 'keep-trying'|">
+      <span th:if="${(correct * 100 / total) >= 80}">素晴らしい！完璧です！</span>
+      <span th:if="${(correct * 100 / total) < 80 && (correct * 100 / total) >= 60}">よくできました！もう一度チャレンジしましょう！</span>
+      <span th:if="${(correct * 100 / total) < 60}">頑張ってください！もう一度挑戦しましょう！</span>
+    </div>
 
-	  <!-- 戻るボタン -->
-	  <form method="post" th:action="@{/reset}" class="button-form">
-	    <button type="submit" class="btn btn-primary">タイトルに戻る</button>
-	  </form>
-	</div>
+    <form method="post" th:action="@{/reset}" class="button-form">
+      <button type="submit">トップに戻る</button>
+    </form>
+  </div>
 </body>
 </html>

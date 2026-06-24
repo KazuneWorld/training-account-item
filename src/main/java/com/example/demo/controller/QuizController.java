@@ -20,20 +20,6 @@ import com.example.demo.session.QuizSession;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * 画面の遷移と、回答処理を担当するコントローラです。
- *
- * 画面：
- * - タイトル：GET /
- * - 問題：GET /quiz
- * - リザルト：GET /result
- *
- * 操作：
- * - 開始：POST /start
- * - 回答：POST /quiz/answer
- * - 次へ：POST /quiz/next
- * - リセット：POST /reset
- */
 @Controller
 @SessionAttributes("quizSession") // quizSession をセッションに保存する指定
 @RequiredArgsConstructor
@@ -53,12 +39,7 @@ public class QuizController {
         return "title";
     }
 
-    /**
-     * スタートボタン押下時：
-     * - 出題順（問題IDリスト）をランダムに決める（重複なし）
-     * - セッションを初期化
-     * - 1問目の画面へ
-     */
+    // クイズ開始処理
     @PostMapping("/start")
     public String startQuiz(@ModelAttribute("quizSession") QuizSession session) {
         // セッション初期化
@@ -95,23 +76,9 @@ public class QuizController {
         return "redirect:/quiz";
     }
 
-    // =========================
-    // 問題画面
-    // =========================
-
-    /**
-     * 問題画面表示
-     * - 未開始ならタイトルへ戻す
-     * - 終了済みならリザルトへ
-     * - それ以外は現在の問題を表示
-     */
+    // クイズ画面表示
     @GetMapping("/quiz")
     public String showQuiz(@ModelAttribute("quizSession") QuizSession session, Model model) {
-
-        // クイズが開始されていない（出題順がない）場合はタイトルへ
-//        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
-//            return "redirect:/";
-//        }
 
         // すべての問題を解き終わっていたらリザルトへ
         if (session.isFinished()) {
@@ -133,25 +100,10 @@ public class QuizController {
         return "quiz";
     }
 
-    /**
-     * 回答処理：
-     * - すでに回答済みなら無視（リロード対策）
-     * - 正誤判定してセッションに保存
-     * - 同じ /quiz を表示（結果エリアに切り替える）
-     */
+    // 回答処理
     @PostMapping("/quiz/answer")
     public String answer(@ModelAttribute("quizSession") QuizSession session,
                          @RequestParam("selectedIndex") int selectedIndex) {
-
-//        // 未開始ならタイトルへ（通常は起きないが保険）
-//        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
-//            return "redirect:/";
-//        }
-//
-//        // 二重回答防止：回答済みなら何もしない
-//        if (session.isAnswered()) {
-//            return "redirect:/quiz";
-//        }
 
         // 今の問題を取得
         int problemId = session.getCurrentProblemId();
@@ -176,24 +128,9 @@ public class QuizController {
         return "redirect:/quiz";
     }
 
-    /**
-     * 次の問題へ：
-     * - 回答前に押されたらそのまま（安全策）
-     * - 回答済みなら次へ進める
-     * - 最後まで終わったらリザルトへ
-     */
+    // 次の問題へ進む処理
     @PostMapping("/quiz/next")
     public String next(@ModelAttribute("quizSession") QuizSession session) {
-
-//        // 未開始ならタイトルへ
-//        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
-//            return "redirect:/";
-//        }
-//
-//        // 回答していないのに次へは押せない想定（保険）
-//        if (!session.isAnswered()) {
-//            return "redirect:/quiz";
-//        }
 
         // 次の問題へ進める
         session.setCurrentIndex(session.getCurrentIndex() + 1);
@@ -212,11 +149,6 @@ public class QuizController {
     // リザルト画面
     @GetMapping("/result")
     public String showResult(@ModelAttribute("quizSession") QuizSession session, Model model) {
-
-//        // 未開始ならタイトルへ
-//        if (session.getQuestionOrder() == null || session.getQuestionOrder().isEmpty()) {
-//            return "redirect:/";
-//        }
     	
         model.addAttribute("correct", session.getCorrectCount());
         model.addAttribute("total", session.getTotalQuestionCount());

@@ -2,65 +2,72 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>簿記3級勘定科目クイズ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>クイズ</title>
   <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
   <div class="container quiz-container">
+    <div class="progress-text" th:text="|問題 ${index} / ${total}|">問題 1 / 10</div>
+    <div class="progress-bar">
+      <div class="progress-fill" th:style="|width: ${index * 100.0 / total}%|"></div>
+    </div>
 
-	<!-- 進捗バー -->
-	<div class="progress-section">
-	  <div class="progress-text" th:text="|問題 ${index} / ${total}|">問題 1 / 10</div>
-	  <div class="progress-bar">
-		<div class="progress-fill" th:style="|width: ${(index * 100 / total)}%|"></div>
+    <h1 class="question-text" th:text="${problem.questionText}">問題文がここに表示されます</h1>
+
+    <!-- 回答前：選択肢ボタン -->
+    <h3>貸借対照表</h3>
+    <div th:if="${!quizSession.answered}" class="account-table">
+	  <div class="table-left">
+      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+        <button type="submit" name="selectedIndex" value="0" class="btn-choice" th:text="${choices[0]}">資産</button>
+      </form>
 	  </div>
-	</div>
-	
-	<!-- 問題文 -->
-	<div class="question-section">
-	  <h2 class="question-text" th:text="${problem.questionText}">問題文がここに表示されます</h2>
-	</div>
-
-	<!-- 回答前：選択肢ボタン -->
-	<div th:if="${!quizSession.answered}" class="choices">
-	  <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-	    <button type="submit" name="selectedIndex" value="0" class="btn btn-choice" th:text="${choices[0]}">選択肢1</button>
-	  </form>
-	  <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-	    <button type="submit" name="selectedIndex" value="1" class="btn btn-choice" th:text="${choices[1]}">選択肢2</button>
-	  </form>
-	  <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-	    <button type="submit" name="selectedIndex" value="2" class="btn btn-choice" th:text="${choices[2]}">選択肢3</button>
-	  </form>
-	  <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-	    <button type="submit" name="selectedIndex" value="3" class="btn btn-choice" th:text="${choices[3]}">選択肢4</button>
-	  </form>
-	  <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-	    <button type="submit" name="selectedIndex" value="4" class="btn btn-choice" th:text="${choices[4]}">選択肢5</button>
-	  </form>
-	</div>
-
-	<!-- 回答後：結果表示 -->
-	<div th:if="${quizSession.answered}" class="result-section">
-	  <div class="result-badge" th:classappend="${quizSession.lastCorrect} ? 'correct' : 'wrong'">
-	    <span th:text="${quizSession.lastCorrect} ? '✓ 正解！' : '✗ 不正解'"></span>
+	  <div class="table-right">
+      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+        <button type="submit" name="selectedIndex" value="1" class="btn-choice" th:text="${choices[1]}">負債</button>
+      </form>
+      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+        <button type="submit" name="selectedIndex" value="2" class="btn-choice" th:text="${choices[2]}">純資産</button>
+      </form>
 	  </div>
-
-	  <div class="result-details">
-	    <div class="result-item">
-	      <span class="result-label">あなたの回答：</span>
-	      <span class="result-value" th:text="${choices[quizSession.lastSelectedIndex]}"></span>
-	    </div>
-	    <div class="result-item">
-	      <span class="result-label">正解：</span>
-	      <span class="result-value correct-answer" th:text="${choices[quizSession.lastCorrectIndex]}"></span>
-	    </div>
 	  </div>
+    <h3>損益計算書</h3>
+	  <div th:if="${!quizSession.answered}" class="account-table">
+	  <div class="table-left">
+      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+        <button type="submit" name="selectedIndex" value="3" class="btn-choice" th:text="${choices[3]}">収益</button>
+      </form>
+	  </div>
+	  <div class="table-right">
+      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+        <button type="submit" name="selectedIndex" value="4" class="btn-choice" th:text="${choices[4]}">費用</button>
+      </form>
+	  </div>
+    </div>
 
-	  <form method="post" th:action="@{/quiz/next}" class="button-form">
-	    <button type="submit" class="btn btn-primary">次の問題へ</button>
-	  </form>
-	</div>
+    <!-- 回答後：結果表示 -->
+    <div th:if="${quizSession.answered}" class="result-section">
+      <div class="result-badge" th:classappend="${quizSession.lastCorrect} ? 'correct' : 'wrong'">
+        <span th:text="${quizSession.lastCorrect} ? '✓ 正解！' : '✗ 不正解'"></span>
+      </div>
+
+      <div class="result-details">
+        <div class="result-item">
+          <div class="result-label">あなたの回答：</div>
+          <div class="result-value" th:text="${choices[quizSession.lastSelectedIndex]}"></div>
+        </div>
+        <div class="result-item">
+          <div class="result-label">正解：</div>
+          <div class="result-value correct-answer" th:text="${choices[quizSession.lastCorrectIndex]}"></div>
+        </div>
+      </div>
+
+      <!-- 次の問題へ ※5問終了済みなら結果画面へと表示 -->
+      <form method="post" th:action="@{/quiz/next}" class="button-form">
+        <button type="submit" class="btn-next" th:text="${index == total} ? '結果を見る' : '次の問題へ'">次の画面へ</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>

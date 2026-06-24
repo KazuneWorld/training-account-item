@@ -20,11 +20,11 @@ public class ProblemService {
 
         // correctIndex は 0=資産, 1=負債, 2=純資産, 3=収益, 4=費用 を表す
         list.add(new Problem(1, "現金", 0));
-//        list.add(new Problem(2, "買掛金", 1));
-//        list.add(new Problem(3, "売掛金", 0));
-//        list.add(new Problem(4, "受取利息", 3));
-//        list.add(new Problem(5, "給料", 4));
-//        list.add(new Problem(6, "繰越利益剰余金", 2));
+        list.add(new Problem(2, "買掛金", 1));
+        list.add(new Problem(3, "売掛金", 0));
+        list.add(new Problem(4, "受取利息", 3));
+        list.add(new Problem(5, "給料", 4));
+        list.add(new Problem(6, "繰越利益剰余金", 2));
 
         this.problems = list;
     }
