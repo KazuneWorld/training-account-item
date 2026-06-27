@@ -24,10 +24,10 @@ public class QuizSession {
     private boolean answered = false;
     // 直前の回答が正解なら true、不正解なら false（未回答のときは意味を持たない）
     private boolean lastCorrect = false;
-    // 直前の選択肢（0..4）
-    private int lastSelectedIndex = 0;
-    // 直前の正解の選択肢（0..4）
-    private int lastCorrectIndex = 0;
+    // 直前の選択肢
+    private String lastSelectedAnswer = null;
+    // 直前の正解の選択肢
+    private String lastCorrectAnswer = null;
 
     // =========================
     // 便利メソッド（Controllerから使う想定）
@@ -46,8 +46,8 @@ public class QuizSession {
     public void resetAnswerState() {
         this.answered = false;
         this.lastCorrect = false;
-        this.lastSelectedIndex = 0;
-        this.lastCorrectIndex = 0;
+        this.lastSelectedAnswer = null;
+        this.lastCorrectAnswer = null;
     }
 
     //現在の問題ID

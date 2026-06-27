@@ -15,6 +15,6 @@ public class Question {
 	private Integer id;
 	//問題文
 	private String question;
-	//正解番号
-	private Integer answer;
+	//正解
+	private String answer;
 }

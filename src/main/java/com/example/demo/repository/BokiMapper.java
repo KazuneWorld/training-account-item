@@ -5,13 +5,12 @@ import org.apache.ibatis.annotations.Param;
 
 import com.example.demo.entity.Question;
 
-//
 @Mapper
 public interface BokiMapper {
 	
 	//全てのクイズを取得します。
-	List<Question> selectAll();
+	List<Question> findAll();
 	
 	//指定されたIDに対応するクイズを取得します。
-	Question selectById(@Param("id") Integer id);
+	Question findById(@Param("id") Integer id);
 }

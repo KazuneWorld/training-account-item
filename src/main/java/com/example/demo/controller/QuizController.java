@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.example.demo.model.Choices;
-import com.example.demo.model.Problem;
-import com.example.demo.service.ProblemService;
+import com.example.demo.entity.Question;
+import com.example.demo.repository.BokiMapper;
 import com.example.demo.session.QuizSession;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class QuizController {
 
-    private final ProblemService problemService;
+    //
+    private final BokiMapper bokiMapper;
 
     // quizSession をセッションに保存するための初期化メソッド
     @ModelAttribute("quizSession")
@@ -46,11 +46,11 @@ public class QuizController {
         session.resetForStart();
 
         // 全問題IDを取得
-        List<Problem> allProblems = problemService.findAll();
+        List<Question> allProblems = bokiMapper.findAll();
         //問題IDのリストを定義
         List<Integer> ids = new ArrayList<>();
         // 問題IDをリストに追加していく
-        for (Problem p : allProblems) {
+        for (Question p : allProblems) {
             ids.add(p.getId());
         }
 
@@ -87,11 +87,13 @@ public class QuizController {
 
         // 現在の問題を取得
         int problemId = session.getCurrentProblemId();
-        Problem problem = problemService.findById(problemId);
+        Question problem = bokiMapper.findById(problemId);
+
+        System.out.println("DBから取得した問題: " + bokiMapper.findById(problemId));
 
         // 画面に渡すデータ
         model.addAttribute("problem", problem);
-        model.addAttribute("choices", Choices.FIXED_CHOICES);
+        // model.addAttribute("choices", Choices.FIXED_CHOICES);
 
         // 表示用（何問目 / 全何問）
         model.addAttribute("index", session.getDisplayQuestionNumber());
@@ -103,15 +105,15 @@ public class QuizController {
     // 回答処理
     @PostMapping("/quiz/answer")
     public String answer(@ModelAttribute("quizSession") QuizSession session,
-                         @RequestParam("selectedIndex") int selectedIndex) {
+                         @RequestParam("selectedAnswer") String selectedAnswer) {
 
         // 今の問題を取得
         int problemId = session.getCurrentProblemId();
-        Problem problem = problemService.findById(problemId);
+        Question problem = bokiMapper.findById(problemId);
 
         // 正誤判定
-        int correctIndex = problem.getCorrectIndex();
-        boolean isCorrect = (selectedIndex == correctIndex);
+        String correctAnswer = problem.getAnswer();
+        boolean isCorrect = (selectedAnswer.equals(correctAnswer));
 
         // 正解なら正解数を増やす
         if (isCorrect) {
@@ -121,8 +123,8 @@ public class QuizController {
         // 回答後表示に必要な情報をセッションへ保存
         session.setAnswered(true);
         session.setLastCorrect(isCorrect);
-        session.setLastSelectedIndex(selectedIndex);
-        session.setLastCorrectIndex(correctIndex);
+        session.setLastSelectedAnswer(selectedAnswer);
+        session.setLastCorrectAnswer(correctAnswer);
 
         // 結果表示のため、同じ画面へ戻す
         return "redirect:/quiz";
