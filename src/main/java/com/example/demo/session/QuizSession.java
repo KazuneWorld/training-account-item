@@ -28,6 +28,8 @@ public class QuizSession {
     private String lastSelectedAnswer = null;
     // 直前の正解の選択肢
     private String lastCorrectAnswer = null;
+    // エンドレスモードかどうか
+    private boolean endlessMode = false;
 
 
     // クイズ開始時にセッションを初期化する

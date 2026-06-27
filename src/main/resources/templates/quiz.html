@@ -8,15 +8,19 @@
 </head>
 <body>
   <div class="container quiz-container">
-    <div class="progress-text" th:text="|問題 ${index} / ${total}|">問題 1 / 10</div>
-    <div class="progress-bar">
-      <div class="progress-fill" th:style="|width: ${index * 100.0 / total}%|"></div>
+    <div th:if="${!quizSession.endlessMode}">
+      <div class="progress-text" th:text="|問題 ${index} / ${total}|">問題 1 / 10</div>
+      <div class="progress-bar">
+        <div class="progress-fill" th:style="|width: ${index * 100.0 / total}%|"></div>
+      </div>
+    </div>
+    <div th:if="${quizSession.endlessMode}">
+      <div class="progress-text" th:text="|${index} 問目|"></div>
     </div>
 
     <h1 class="question-text" th:text="${problem.question}">問題文</h1>
 
     <!-- 回答前：選択肢ボタン -->
-    <h3>貸借対照表</h3>
     <div th:if="${!quizSession.answered}" class="account-table">
 	  <div class="table-left">
       <form method="post" th:action="@{/quiz/answer}" class="choice-form">
@@ -28,11 +32,10 @@
         <button type="submit" name="selectedAnswer" value="負債" class="btn-choice">負債</button>
       </form>
       <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-        <button type="submit" name="selectedAnswer" value="純資産" class="btn-choice">純資産</button>
+        <button type="submit" name="selectedAnswer" value="純資産" class="btn-choice">資本<br>（純資産）</button>
       </form>
 	  </div>
 	  </div>
-    <h3>損益計算書</h3>
 	  <div th:if="${!quizSession.answered}" class="account-table">
 	  <div class="table-left">
       <form method="post" th:action="@{/quiz/answer}" class="choice-form">

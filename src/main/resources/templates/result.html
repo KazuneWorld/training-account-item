@@ -10,18 +10,26 @@
   <div class="container result-container">
     <h1>クイズ完了！</h1>
 
-    <div class="score-section">
-      <div class="score-circle">
-        <div class="score-number" th:text="${correct}"></div>
-        <div class="score-total" th:text="'/ ' + ${total}"></div>
+    <div th:if="${!quizSession.endlessMode}">
+      <div class="score-section">
+        <div class="score-circle">
+          <div class="score-number" th:text="${correct}"></div>
+          <div class="score-total" th:text="'/ ' + ${total}"></div>
+        </div>
+        <div class="score-text" th:text="|正解率：${(correct * 100 / total).intValue()}%|"></div>
       </div>
-      <div class="score-text" th:text="|正解率：${(correct * 100 / total).intValue()}%|"></div>
+
+      <div class="evaluation" th:classappend="|*{(correct * 100 / total) >= 80} ? 'excellent' : *{(correct * 100 / total) >= 60} ? 'good' : 'keep-trying'|">
+        <span th:if="${(correct * 100 / total) >= 80}">素晴らしい！完璧です！</span>
+        <span th:if="${(correct * 100 / total) < 80 && (correct * 100 / total) >= 60}">よくできました！もう一度チャレンジしましょう！</span>
+        <span th:if="${(correct * 100 / total) < 60}">頑張ってください！もう一度挑戦しましょう！</span>
+      </div>
     </div>
 
-    <div class="evaluation" th:classappend="|*{(correct * 100 / total) >= 80} ? 'excellent' : *{(correct * 100 / total) >= 60} ? 'good' : 'keep-trying'|">
-      <span th:if="${(correct * 100 / total) >= 80}">素晴らしい！完璧です！</span>
-      <span th:if="${(correct * 100 / total) < 80 && (correct * 100 / total) >= 60}">よくできました！もう一度チャレンジしましょう！</span>
-      <span th:if="${(correct * 100 / total) < 60}">頑張ってください！もう一度挑戦しましょう！</span>
+    <div th:if="${quizSession.endlessMode}">
+      <div class="score-section">
+        <div class="score-text" th:text="|正解数：${correct} 問|"></div>
+      </div>
     </div>
 
     <form method="post" th:action="@{/reset}" class="button-form">

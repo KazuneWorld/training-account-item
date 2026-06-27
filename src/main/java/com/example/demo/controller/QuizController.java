@@ -39,12 +39,25 @@ public class QuizController {
 
     // クイズ開始処理
     @PostMapping("/start")
-    public String startQuiz(@ModelAttribute("quizSession") QuizSession session) {
+    public String startQuiz(@ModelAttribute("quizSession")
+                            @RequestParam("mode") int mode,
+                            QuizSession session) {
         // セッション初期化
         session.resetForStart();
 
-        //DBからランダムに5件IDを取得
-        List<Integer> order = bokiMapper.findRandomIds(5);
+        List<Integer> order;
+
+        //出題モード
+        if (mode == 0) {
+            order = bokiMapper.findRandomIds(5); // 通常モード（5問）
+            session.setQuestionOrder(order);
+            session.setEndlessMode(false);
+        } else {
+            order = bokiMapper.findRandomIds(100); // エンドレスモード
+            session.setQuestionOrder(order);
+            //エンドレスモードでは1度間違えると終了のためセッションにエンドレスモードであることを保存
+            session.setEndlessMode(true);
+        }
         
         // セッションに出題順（IDのリスト）を保存
         session.setQuestionOrder(order);
@@ -110,6 +123,11 @@ public class QuizController {
     @PostMapping("/quiz/next")
     public String next(@ModelAttribute("quizSession") QuizSession session) {
 
+        // エンドレスモードで直前の回答が不正解ならリザルトへ
+        if (session.isEndlessMode() && !session.isLastCorrect()) {
+            return "redirect:/result";
+        }
+
         // 次の問題へ進める
         session.setCurrentIndex(session.getCurrentIndex() + 1);
 
@@ -120,6 +138,7 @@ public class QuizController {
         if (session.isFinished()) {
             return "redirect:/result";
         }
+
         // 次の問題へ
         return "redirect:/quiz";
     }
