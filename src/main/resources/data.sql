@@ -1,0 +1,10 @@
+INSERT INTO boki (question, answer) VALUES ('現金', '資産');
+INSERT INTO boki (question, answer) VALUES ('当座預金', '資産');
+INSERT INTO boki (question, answer) VALUES ('売掛金', '資産');
+INSERT INTO boki (question, answer) VALUES ('商品', '資産');
+INSERT INTO boki (question, answer) VALUES ('買掛金', '負債');
+INSERT INTO boki (question, answer) VALUES ('借入金', '負債');
+INSERT INTO boki (question, answer) VALUES ('資本金', '純資産');
+INSERT INTO boki (question, answer) VALUES ('売上', '収益');
+INSERT INTO boki (question, answer) VALUES ('仕入', '費用');
+INSERT INTO boki (question, answer) VALUES ('給料', '費用');
