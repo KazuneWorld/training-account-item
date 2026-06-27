@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -45,31 +43,10 @@ public class QuizController {
         // セッション初期化
         session.resetForStart();
 
-        // 全問題IDを取得
-        List<Question> allProblems = bokiMapper.findAll();
-        //問題IDのリストを定義
-        List<Integer> ids = new ArrayList<>();
-        // 問題IDをリストに追加していく
-        for (Question p : allProblems) {
-            ids.add(p.getId());
-        }
-
-        // IDをランダムに並べ替え（シャッフル）
-        Collections.shuffle(ids);
-
-        // 出題数の設定:5問（足りなければあるだけ出題）
-        int questionCount = 5;
-        if (ids.size() < 5) {
-            questionCount = ids.size();
-        }
-
-        // 出題順リスト（先頭からquestionCount件を採用）
-        List<Integer> order = new ArrayList<>();
-        // questionCount件分のIDを出題順リストに追加
-        for (int i = 0; i < questionCount; i++) {
-            order.add(ids.get(i));
-        }
-        // セッションに出題順を保存（確定）
+        //DBからランダムに5件IDを取得
+        List<Integer> order = bokiMapper.findRandomIds(5);
+        
+        // セッションに出題順（IDのリスト）を保存
         session.setQuestionOrder(order);
 
         // 1問目へ
@@ -93,7 +70,6 @@ public class QuizController {
 
         // 画面に渡すデータ
         model.addAttribute("problem", problem);
-        // model.addAttribute("choices", Choices.FIXED_CHOICES);
 
         // 表示用（何問目 / 全何問）
         model.addAttribute("index", session.getDisplayQuestionNumber());

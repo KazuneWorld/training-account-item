@@ -3,6 +3,11 @@
 dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.BokiMapper">
 
+    <!-- ランダムid取得 -->
+   <select id="findRandomIds" resultType="java.lang.Integer">
+       SELECT id FROM boki ORDER BY RANDOM() LIMIT #{limit}
+   </select>
+
     <!-- id全件取得 -->
    <select id="findAll" resultType="com.example.demo.entity.Question">
        SELECT id FROM boki

@@ -8,6 +8,9 @@ import com.example.demo.entity.Question;
 @Mapper
 public interface BokiMapper {
 	
+	// ランダムに指定件数のidを取得します。
+	List<Integer> findRandomIds(@Param("limit") int limit);
+	
 	//全てのクイズを取得します。
 	List<Question> findAll();
 	
