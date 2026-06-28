@@ -10,6 +10,7 @@
   <div class="container result-container">
     <h1>結果</h1>
 
+    <!-- ==================== 通常モードの表示 ==================== -->
     <div th:if="${!quizSession.endlessMode}">
       <div class="score-section">
         <div class="score-circle">
@@ -19,22 +20,36 @@
         <div class="score-text" th:text="|正解率：${(correct * 100 / total).intValue()}%|"></div>
       </div>
 
-      <div class="evaluation" th:classappend="|*{(correct * 100 / total) >= 80} ? 'excellent' : *{(correct * 100 / total) >= 60} ? 'good' : 'keep-trying'|">
+      <!-- 通常モードの評価メッセージ -->
+      <div class="evaluation" 
+           th:classappend="|*{(correct * 100 / total) >= 80} ? 'excellent' : *{(correct * 100 / total) >= 60} ? 'good' : 'keep-trying'|">
         <span th:if="${(correct * 100 / total) >= 80}">素晴らしい！完璧です！</span>
         <span th:if="${(correct * 100 / total) < 80 && (correct * 100 / total) >= 60}">よくできました！もう一度チャレンジしましょう！</span>
         <span th:if="${(correct * 100 / total) < 60}">頑張ってください！もう一度挑戦しましょう！</span>
       </div>
     </div>
 
+    <!-- ==================== エンドレスモードの表示 ==================== -->
     <div th:if="${quizSession.endlessMode}">
+
+      <!-- スコア表示（エンドレス用） -->
       <div class="score-section">
         <div class="score-text" th:text="|正解数：${correct} 問|"></div>
       </div>
+      <!-- エンドレスモードの評価メッセージ -->
+      <div class="evaluation" 
+           th:classappend="|${correct >= 20} ? 'excellent' : ${correct >= 10} ? 'good' : 'keep-trying'|">
+        <span th:if="${correct >= 20}">全ての問題に正解しました！伝説級の記録です！</span>
+        <span th:if="${correct < 20 && correct >= 10}">ナイスチャレンジ！高得点です！</span>
+        <span th:if="${correct < 10}">次は10問正解を目指して頑張りましょう！</span>
+      </div>
     </div>
 
+    <!-- 戻るボタン -->
     <form method="post" th:action="@{/reset}" class="button-form">
       <button type="submit">トップに戻る</button>
     </form>
   </div>
 </body>
+
 </html>

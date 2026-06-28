@@ -8,20 +8,20 @@
 </head>
 <body>
   <div class="container">
-    <h1>簿記3級勘定科目クイズ</h1>
+    <h1 class="title">簿記3級勘定科目クイズ</h1>
     <p class="subtitle">勘定科目の分類を学習しましょう</p>
 
 <div class="button-section">
   <form method="post" th:action="@{/start}" class="button-form">
     <input type="hidden" name="mode" value="0">
     <button type="submit">開始</button>
-    <p class="mode-desc">全10問です</p> <!-- クラスを追加 -->
+    <p class="mode-desc">全10問です</p>
   </form>
 
   <form method="post" th:action="@{/start}" class="button-form">
     <input type="hidden" name="mode" value="1">
     <button type="submit">エンドレスモード</button>
-    <p class="mode-desc">一度でも間違えると終了します</p> <!-- クラスを追加 -->
+    <p class="mode-desc">一度でも間違えると終了します</p>
   </form>
 </div>
 
