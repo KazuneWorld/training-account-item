@@ -21,6 +21,10 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+/* クイズページ（.quiz-container）の時だけ、横並びのために幅を広げる */
+.container.quiz-container {
+  max-width: 700px;
+}
 
 h1 {
   font-size: 1.8em;
@@ -62,7 +66,20 @@ button:active {
 }
 
 .button-form {
-  margin-bottom: 10px;
+  margin-bottom: 24px;
+  margin-top: 10px;
+}
+
+.mode-desc {
+  font-size: 0.85em;
+  color: #888;
+  margin-top: 6px;
+  text-align: center;
+}
+
+.button-section {
+  text-align: center;
+  color: #666;
 }
 
 /* ==========================================
@@ -97,10 +114,15 @@ button:active {
 
 .question-text {
   font-size: 1.4em;
-  margin-bottom: 30px;
+  margin: 30px 100px;
   text-align: center;
-  color: #333;
-  font-weight: 500;
+  color: #004085;
+  font-weight: 700;
+  background-color: #e7f3ff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: 2px dashed #99caff;
+  letter-spacing: 0.1em;
 }
 
 /* 選択肢 */
@@ -130,7 +152,7 @@ button:active {
 
 .btn-choice[value="収益"],
 .btn-choice[value="費用"] {
-  padding: 70px 16px;
+  padding: 82px 16px;
 }
 .btn-choice[value="資産"] {
   padding: 82px 16px;
@@ -152,9 +174,37 @@ button:active {
   background-color: #e7f3ff;
 }
 
+/* 表のタイトル（貸借対照表・損益計算書） */
+.table-title {
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  border-bottom: 2px solid #007bff; /* アクセントカラーの青い下線 */
+  padding-bottom: 5px;
+}
+
+/* 最初のタイトルは上の余白を詰める */
+.table-title:first-child {
+  margin-top: 0;
+}
+
+/* 2つの表を横並びにするコンテナ */
+.financial-statements-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 左右1:1の比率で分割 */
+  gap: 30px; /* 左右の表の間の余白 */
+}
+/* 横並びにするため、各表の下余白をなくす（全体で調整） */
+.statement-block .account-table {
+  margin-bottom: 0;
+}
+
 /* 結果セクション */
 .result-section {
-  margin-top: 20px;
+  margin: 20px 100px;
 }
 
 .result-badge {
@@ -284,79 +334,30 @@ button:active {
   border: 1px solid #ffeaa7;
 }
 
+
 /* ==========================================
-   レスポンシブ対応
+   レスポンシブ対応（スマホ表示）
    ========================================== */
-
-/* @media (max-width: 600px) {
+@media (max-width: 600px) {
+  
   .container {
-    padding: 25px 20px;
+    max-width: 500px; /* スマホでは元のサイズ感に戻す */
   }
 
-  h1 {
-    font-size: 1.5em;
+  /* 横並びを解除して縦並び（1列）にする */
+  .financial-statements-container {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
+  /* 縦並びになった時の、貸借対照表と損益計算書の間の余白 */
+  .statement-block:nth-child(2) {
+    margin-top: 20px;
+  }
   .question-text {
-    font-size: 1.2em;
+    margin: 0px 0px 30px 0px;
   }
-
-  .score-circle {
-    width: 120px;
-    height: 120px;
-  }
-
-  .score-number {
-    font-size: 2.5em;
-  }
-
-  button {
-    padding: 11px 20px;
-    font-size: 0.95em;
+  .result-section {
+    margin: 0px 0px;
   }
 }
-
-@media (max-width: 400px) {
-  .container {
-    padding: 20px 15px;
-  }
-
-  h1 {
-    font-size: 1.3em;
-    margin-bottom: 8px;
-  }
-
-  .subtitle {
-    margin-bottom: 20px;
-    font-size: 0.9em;
-  }
-
-  .question-text {
-    font-size: 1.1em;
-    margin-bottom: 20px;
-  }
-
-  .result-badge {
-    font-size: 1.1em;
-    padding: 12px;
-  }
-
-  .result-details {
-    padding: 12px;
-    font-size: 0.9em;
-  }
-
-  .score-circle {
-    width: 100px;
-    height: 100px;
-  }
-
-  .score-number {
-    font-size: 2em;
-  }
-
-  button {
-    padding: 10px 16px;
-    font-size: 0.9em;
-  }
-} */

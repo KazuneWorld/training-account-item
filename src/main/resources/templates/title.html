@@ -11,15 +11,19 @@
     <h1>簿記3級勘定科目クイズ</h1>
     <p class="subtitle">勘定科目の分類を学習しましょう</p>
 
-<form method="post" th:action="@{/start}" class="button-form">
-  <input type="hidden" name="mode" value="0">
-  <button type="submit">開始</button>
-</form>
+<div class="button-section">
+  <form method="post" th:action="@{/start}" class="button-form">
+    <input type="hidden" name="mode" value="0">
+    <button type="submit">開始</button>
+    <p class="mode-desc">全10問です</p> <!-- クラスを追加 -->
+  </form>
 
-<form method="post" th:action="@{/start}" class="button-form">
-  <input type="hidden" name="mode" value="1">
-  <button type="submit">エンドレスモード</button>
-</form>
+  <form method="post" th:action="@{/start}" class="button-form">
+    <input type="hidden" name="mode" value="1">
+    <button type="submit">エンドレスモード</button>
+    <p class="mode-desc">一度でも間違えると終了します</p> <!-- クラスを追加 -->
+  </form>
+</div>
 
   </div>
 </body>

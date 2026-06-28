@@ -20,33 +20,46 @@
 
     <h1 class="question-text" th:text="${problem.question}">問題文</h1>
 
-    <!-- 回答前：選択肢ボタン -->
-    <div th:if="${!quizSession.answered}" class="account-table">
-	  <div class="table-left">
-      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-        <button type="submit" name="selectedAnswer" value="資産" class="btn-choice">資産</button>
-      </form>
-	  </div>
-	  <div class="table-right">
-      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-        <button type="submit" name="selectedAnswer" value="負債" class="btn-choice">負債</button>
-      </form>
-      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-        <button type="submit" name="selectedAnswer" value="純資産" class="btn-choice">資本<br>（純資産）</button>
-      </form>
-	  </div>
-	  </div>
-	  <div th:if="${!quizSession.answered}" class="account-table">
-	  <div class="table-left">
-      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-        <button type="submit" name="selectedAnswer" value="収益" class="btn-choice">収益</button>
-      </form>
-	  </div>
-	  <div class="table-right">
-      <form method="post" th:action="@{/quiz/answer}" class="choice-form">
-        <button type="submit" name="selectedAnswer" value="費用" class="btn-choice">費用</button>
-      </form>
-	  </div>
+<!-- 回答前：選択肢ボタン -->
+    <div th:if="${!quizSession.answered}" class="financial-statements-container">
+      
+      <!-- 貸借対照表セクション -->
+      <div class="statement-block">
+        <div class="table-title">貸借対照表</div>
+        <div class="account-table">
+          <div class="table-left">
+            <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+              <button type="submit" name="selectedAnswer" value="資産" class="btn-choice">資産</button>
+            </form>
+          </div>
+          <div class="table-right">
+            <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+              <button type="submit" name="selectedAnswer" value="負債" class="btn-choice">負債</button>
+            </form>
+            <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+              <button type="submit" name="selectedAnswer" value="純資産" class="btn-choice">資本<br>（純資産）</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 損益計算書セクション -->
+      <div class="statement-block">
+        <div class="table-title">損益計算書</div>
+        <div class="account-table">
+          <div class="table-left">
+            <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+              <button type="submit" name="selectedAnswer" value="収益" class="btn-choice">収益</button>
+            </form>
+          </div>
+          <div class="table-right">
+            <form method="post" th:action="@{/quiz/answer}" class="choice-form">
+              <button type="submit" name="selectedAnswer" value="費用" class="btn-choice">費用</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- 回答後：結果表示 -->
@@ -62,14 +75,18 @@
         </div>
         <div class="result-item">
           <div class="result-label">正解：</div>
-          <div class="result-value correct-answer" th:text="${quizSession.lastCorrectAnswer}"></div>
+          <div th:if="${quizSession.lastCorrectAnswer == '純資産'}" class="result-value correct-answer" th:text="|資本（${quizSession.lastCorrectAnswer}）|"></div>
+          <div th:if="${quizSession.lastCorrectAnswer != '純資産'}" class="result-value correct-answer" th:text="${quizSession.lastCorrectAnswer}"></div>
         </div>
       </div>
 
-      <!-- 次の問題へ ※5問終了済みなら結果画面へと表示 -->
+      <!-- 次の画面へ -->
       <form method="post" th:action="@{/quiz/next}" class="button-form">
-        <button type="submit" class="btn-next" th:text="${index == total} ? '結果を見る' : '次の問題へ'">次の画面へ</button>
-      </form>
+        <button type="submit" 
+          class="btn-next" 
+          th:text="${(quizSession.endlessMode and !quizSession.lastCorrect) or 
+          (!quizSession.endlessMode and index == total)} ? '結果を見る' : '次の問題へ'">次の画面へ</button>
+</form>
     </div>
   </div>
 </body>
