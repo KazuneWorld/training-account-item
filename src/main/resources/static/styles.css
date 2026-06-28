@@ -128,13 +128,18 @@ button:active {
   font-weight: 500;
 }
 
-.btn-choice[value="3"],
-.btn-choice[value="4"] {
+.btn-choice[value="収益"],
+.btn-choice[value="費用"] {
   padding: 70px 16px;
 }
-
-.btn-choice[value="0"] {
+.btn-choice[value="資産"] {
   padding: 82px 16px;
+}
+.btn-choice[value="負債"] {
+  padding: 34px 16px;
+}
+.btn-choice[value="純資産"] {
+  padding: 24px 16px;
 }
 
 .btn-choice:hover {
@@ -283,7 +288,7 @@ button:active {
    レスポンシブ対応
    ========================================== */
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .container {
     padding: 25px 20px;
   }
@@ -354,4 +359,4 @@ button:active {
     padding: 10px 16px;
     font-size: 0.9em;
   }
-}
+} */
