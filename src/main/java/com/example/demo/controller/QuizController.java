@@ -49,7 +49,7 @@ public class QuizController {
 
         //出題モード
         if (mode == 0) {
-            order = bokiMapper.findRandomIds(5); // 通常モード（5問）
+            order = bokiMapper.findRandomIds(10); // 通常モード（10問）
             session.setQuestionOrder(order);
             session.setEndlessMode(false);
         } else {
